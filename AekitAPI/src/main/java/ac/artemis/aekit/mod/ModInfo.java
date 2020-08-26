@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface ModInfo {
     String name();
     String version();
-    String[] authors();
+    String[] authors() default {};
 }

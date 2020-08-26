@@ -1,5 +1,6 @@
 package ac.artemis.aekit.bukkit.reader;
 
+import ac.artemis.aekit.asm.WrappedClass;
 import ac.artemis.aekit.bukkit.jar.BukkitJarFile;
 import ac.artemis.aekit.bukkit.resource.DefaultResource;
 import ac.artemis.aekit.bukkit.utils.ClassFileUtils;
@@ -7,7 +8,8 @@ import ac.artemis.aekit.loader.ClassPool;
 import ac.artemis.aekit.loader.JarFile;
 import ac.artemis.aekit.loader.JarReader;
 import ac.artemis.aekit.loader.Resource;
-import ac.artemis.aekit.loader.pool.ByteClassPool;
+import ac.artemis.aekit.loader.pool.AsmClassPool;
+import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.io.ByteArrayInputStream;
@@ -32,7 +34,7 @@ public class AsmJarReader implements JarReader {
 
     @Override
     public JarFile loadJarFile(byte[] fileContent) throws IOException {
-        ClassPool<byte[]> classPool = new ByteClassPool();
+        ClassPool<WrappedClass> classPool = new AsmClassPool();
         Map<String, Resource> resources = new HashMap<>();
 
         try (ZipInputStream zipIn = new ZipInputStream(new ByteArrayInputStream(fileContent))) {
@@ -48,10 +50,17 @@ public class AsmJarReader implements JarReader {
                     out.write(buffer, 0, total);
                 }
                 entryContent = out.toByteArray();
-
-                new ClassNode()
                 if (fileName.endsWith(".class") && ClassFileUtils.isValidClassFile(entryContent)) {
-                    classPool.addClass(fileName, entryContent);
+                    ClassReader reader = new ClassReader(entryContent);
+
+                    ClassNode node = new ClassNode();
+                    try {
+                        reader.accept(node, ClassReader.EXPAND_FRAMES);
+                    } catch (Exception e) {
+                        reader.accept(node, ClassReader.SKIP_FRAMES | ClassReader.SKIP_DEBUG);
+                    }
+                    reader = null;
+                    classPool.addClass(fileName, new WrappedClass(fileName, node, entryContent));
                 } else if (!entry.isDirectory()) {
                     resources.put(fileName, new DefaultResource(fileName, entryContent, false));
                 }
