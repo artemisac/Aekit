@@ -1,4 +1,4 @@
-package ac.artemis.aekit.bukkit.mod;
+package ac.artemis.aekit.bukkit.mod.clazz;
 
 import ac.artemis.aekit.loader.ModClassLoader;
 
