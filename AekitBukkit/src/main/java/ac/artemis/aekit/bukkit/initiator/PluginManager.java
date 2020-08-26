@@ -2,7 +2,6 @@ package ac.artemis.aekit.bukkit.initiator;
 
 import ac.artemis.aekit.asm.WrappedClass;
 import ac.artemis.aekit.bukkit.mod.AsmPluginLoader;
-import ac.artemis.aekit.bukkit.mod.BukkitPluginLoader;
 import ac.artemis.aekit.bukkit.reader.AsmJarReader;
 import ac.artemis.aekit.loader.JarFile;
 import ac.artemis.aekit.loader.JarReader;

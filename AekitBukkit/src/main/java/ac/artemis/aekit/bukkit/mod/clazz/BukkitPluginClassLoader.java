@@ -1,6 +1,5 @@
 package ac.artemis.aekit.bukkit.mod.clazz;
 
-import ac.artemis.aekit.bukkit.mod.PluginClassLoader;
 import ac.artemis.aekit.bukkit.utils.Reflection;
 import ac.artemis.aekit.loader.ClassPool;
 import ac.artemis.aekit.loader.JarFile;
