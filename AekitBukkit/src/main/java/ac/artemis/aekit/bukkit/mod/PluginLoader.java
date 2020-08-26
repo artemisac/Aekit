@@ -1,15 +1,16 @@
-package ac.artemis.aekit.loader;
+package ac.artemis.aekit.bukkit.mod;
+
+import org.bukkit.plugin.InvalidPluginException;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public interface ModLoader {
-    JarFile getJarFile();
-
-    ModClassLoader getClassLoader();
-
-    void loadPlugin() throws Exception;
+/**
+ * @author Cg.
+ */
+public interface PluginLoader {
+    void loadPlugin() throws InvalidPluginException;
 
     void unloadPlugin();
 
