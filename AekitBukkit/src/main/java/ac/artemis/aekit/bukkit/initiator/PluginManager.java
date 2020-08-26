@@ -37,11 +37,18 @@ public class PluginManager implements Manager {
     public void init() {
         this.reader = new AsmJarReader();
         initPlugins();
+        this.mods.forEach(mod -> {
+            try {
+                mod.loadPlugin();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void disinit() {
-
+        this.mods.forEach(ModLoader::unloadPlugin);
     }
 
     @SneakyThrows
