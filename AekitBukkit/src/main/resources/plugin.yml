@@ -1,0 +1,8 @@
+name: Aekit
+version: ${project.version}
+main: ac.artemis.aekit.bukkit.AekitPlugin
+prefix: Aekit
+load: STARTUP
+authors: [Ghast]
+description: Kit for developping plugins and extensions
+website: https://artemis.ac
