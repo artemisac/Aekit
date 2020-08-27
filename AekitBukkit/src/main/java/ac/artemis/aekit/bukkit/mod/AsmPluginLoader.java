@@ -27,11 +27,14 @@ import org.objectweb.asm.tree.MethodNode;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 
 /**
- * @author Cg.
+ * @author Cg., Ghast
  */
 public class AsmPluginLoader implements ModLoader {
     private static final Reflection.MethodInvoker REMOVE_CLASS_METHOD = Reflection.getMethod(JavaPluginLoader.class, "removeClass", String.class);
@@ -155,6 +158,13 @@ public class AsmPluginLoader implements ModLoader {
         this.dependencyClassLoader.addURL(url);
     }
 
+    @Override
+    public Map<String, Class<?>> getClasses() {
+        Reflection.FieldAccessor<Map> fieldAccessor = Reflection.getField(JavaPluginLoader.class, "classes", Map.class);
+        Map<String, Class<?>> map = (Map<String, Class<?>>) fieldAccessor.get(this.pluginLoader);
+        return map;
+    }
+    
     private byte[] processMainClass(byte[] classContent) {
         ClassReader classReader = new ClassReader(classContent);
         ClassNode classNode = new ClassNode();
